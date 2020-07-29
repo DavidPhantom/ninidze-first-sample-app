@@ -28,4 +28,36 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     get users_path
     assert_select 'a', text: 'delete', count: 0
   end
+
+  test "index activated/non-activated user" do
+    log_in_as(@admin)
+    get users_path
+    assert_template 'users/index'
+    assert_select 'div.pagination'
+    first_page_of_users = User.paginate(page: 1)
+    first_page_of_users.each do |user|
+      assert_select 'a[href=?]', user_path(user), text: user.name
+    end
+    non_admin = @non_admin
+    non_admin.toggle!(:activated)
+    first_page_of_users.each do |user|
+       unless user.id == non_admin.id
+        assert_select 'a[href=?]', user_path(user), text: user.name
+      end
+    end
+  end
+
+  test "show activated/non-activated user" do
+    log_in_as(@admin)
+    get users_path
+    assert_template 'users/index'
+    assert_select 'div.pagination'
+    non_admin = @non_admin
+    get user_path(non_admin)
+    assert_template 'users/show'
+    get users_path
+    non_admin.toggle!(:activated)
+    get user_path(non_admin)
+    assert_redirected_to root_url
+  end
 end
