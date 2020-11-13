@@ -5,7 +5,7 @@ ruby '2.5.8'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'awesome_print'
-gem 'bootstrap-sass', '3.3.6'
+gem 'bootstrap-sass', '3.4.1'
 gem 'jquery-rails', '4.3.3'
 gem 'rails', '~> 5.2.4', '>= 5.2.4.3'
 gem 'faker',                '2.13.0'
